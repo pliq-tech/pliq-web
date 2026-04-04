@@ -1,0 +1,48 @@
+# Stage 1: Dependencies
+FROM oven/bun:1.2-alpine AS deps
+WORKDIR /app
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
+
+# Stage 2: Builder
+FROM oven/bun:1.2-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build-time env vars (NEXT_PUBLIC_* must be available at build time)
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_WS_URL
+ARG NEXT_PUBLIC_WORLD_ID_APP_ID
+ARG NEXT_PUBLIC_WORLD_ID_ACTION_ID
+ARG NEXT_PUBLIC_CHAIN_ID
+ARG NEXT_PUBLIC_ESCROW_CONTRACT
+ARG NEXT_PUBLIC_REGISTRY_CONTRACT
+ARG NEXT_PUBLIC_REPUTATION_CONTRACT
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_WS_URL=$NEXT_PUBLIC_WS_URL
+ENV NEXT_PUBLIC_WORLD_ID_APP_ID=$NEXT_PUBLIC_WORLD_ID_APP_ID
+ENV NEXT_PUBLIC_WORLD_ID_ACTION_ID=$NEXT_PUBLIC_WORLD_ID_ACTION_ID
+ENV NEXT_PUBLIC_CHAIN_ID=$NEXT_PUBLIC_CHAIN_ID
+ENV NEXT_PUBLIC_ESCROW_CONTRACT=$NEXT_PUBLIC_ESCROW_CONTRACT
+ENV NEXT_PUBLIC_REGISTRY_CONTRACT=$NEXT_PUBLIC_REGISTRY_CONTRACT
+ENV NEXT_PUBLIC_REPUTATION_CONTRACT=$NEXT_PUBLIC_REPUTATION_CONTRACT
+
+RUN bun run build
+
+# Stage 3: Runner
+FROM oven/bun:1.2-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+EXPOSE 3000
+ENV HOSTNAME="0.0.0.0"
+CMD ["bun", "server.js"]
