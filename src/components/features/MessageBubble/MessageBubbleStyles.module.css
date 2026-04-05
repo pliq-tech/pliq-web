@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.alignLeft {
+  justify-content: flex-start;
+}
+
+.alignRight {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: 75%;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--glass-radius);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur))
+    saturate(var(--glass-saturation));
+  border: 0.1rem solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  word-break: break-word;
+}
+
+.own {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: transparent;
+}
+
+.content {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.timestamp {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+  display: block;
+}
+
+.own .timestamp {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@supports not (backdrop-filter: blur(1rem)) {
+  .bubble:not(.own) {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
