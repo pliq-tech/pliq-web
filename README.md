@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# pliq-web
 
-## Getting Started
+Next.js progressive web app for the Pliq rental platform. Provides the main tenant and landlord interface.
 
-First, run the development server:
+## Prerequisites
+
+- [Bun](https://bun.sh/) >= 1.3.10
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+# Clone and enter the repo
+cd pliq-web
+
+# Copy environment config
+cp .env.example .env
+# Edit .env with your values
+
+# Install dependencies
+bun install
+
+# Run dev server
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_API_URL` | Yes | Backend API URL |
+| `NEXT_PUBLIC_WS_URL` | Yes | WebSocket endpoint URL |
+| `NEXT_PUBLIC_WORLD_ID_APP_ID` | Yes | World ID application ID |
+| `NEXT_PUBLIC_WORLD_ID_ACTION_ID` | Yes | World ID action identifier |
+| `NEXT_PUBLIC_CHAIN_ID` | No | Blockchain network ID (default: `480`) |
+| `NEXT_PUBLIC_ESCROW_CONTRACT` | Yes | Escrow contract address |
+| `NEXT_PUBLIC_REGISTRY_CONTRACT` | Yes | Registry contract address |
+| `NEXT_PUBLIC_REPUTATION_CONTRACT` | Yes | Reputation contract address |
 
-## Learn More
+All `NEXT_PUBLIC_*` variables are build-time — they are baked into the JavaScript bundle during `bun run build`.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/                  # Next.js App Router
+│   ├── (auth)/           # Authentication routes (World ID, wallet)
+│   ├── (app)/            # Protected app routes
+│   │   ├── dashboard/    # User dashboard
+│   │   ├── properties/   # Property listings
+│   │   ├── applications/ # Rental applications
+│   │   ├── leases/       # Lease management
+│   │   ├── payments/     # Payment history
+│   │   ├── reputation/   # PoR score
+│   │   └── ...
+│   └── layout.tsx        # Root layout with PWA meta tags
+├── components/           # React components
+├── contexts/             # React context providers
+├── hooks/                # Custom React hooks
+├── lib/
+│   ├── api/              # REST and WebSocket clients
+│   ├── types/            # TypeScript type definitions
+│   └── config.ts         # Environment configuration
+└── test/
+    └── setup.ts          # Test DOM setup (happy-dom)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development
 
-## Deploy on Vercel
+```bash
+# Dev server with hot reload
+bun dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Build for production
+bun run build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Start production server
+bun start
+
+# Lint
+bun run lint
+
+# Format
+bun run format
+
+# Run tests
+bun test
+
+# Run tests in watch mode
+bun test --watch
+
+# Coverage
+bun test --coverage
+```
+
+## Docker
+
+```bash
+# Build (pass NEXT_PUBLIC_* as build args)
+docker build \
+  --build-arg NEXT_PUBLIC_API_URL=http://api.example.com \
+  --build-arg NEXT_PUBLIC_WS_URL=ws://api.example.com/ws \
+  -t pliq-web .
+
+# Run
+docker run -p 3000:3000 pliq-web
+```
