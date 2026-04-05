@@ -5,15 +5,18 @@ import type { ReactNode } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { WagmiProvider } from "./WagmiProvider";
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
-      <ToastProvider>
-        <AuthProvider>
-          <NotificationProvider>{children}</NotificationProvider>
-        </AuthProvider>
-      </ToastProvider>
-    </ThemeProvider>
+    <WagmiProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <AuthProvider>
+            <NotificationProvider>{children}</NotificationProvider>
+          </AuthProvider>
+        </ToastProvider>
+      </ThemeProvider>
+    </WagmiProvider>
   );
 }
