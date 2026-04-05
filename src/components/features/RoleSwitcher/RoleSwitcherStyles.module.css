@@ -1,0 +1,44 @@
+.wrapper {
+  display: flex;
+  border-radius: var(--glass-radius);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur))
+    saturate(var(--glass-saturation));
+  border: 0.1rem solid var(--glass-border);
+  padding: 0.2rem;
+  gap: 0.2rem;
+}
+
+.tab {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: calc(var(--glass-radius) - 0.2rem);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition:
+    background var(--transition-normal),
+    color var(--transition-normal);
+  font-family: inherit;
+}
+
+.tab:hover:not(.active) {
+  background: var(--glass-bg-hover);
+  color: var(--color-text);
+}
+
+.active {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  box-shadow: 0 0.2rem 0.8rem rgba(99, 102, 241, 0.3);
+}
+
+@supports not (backdrop-filter: blur(1rem)) {
+  .wrapper {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
