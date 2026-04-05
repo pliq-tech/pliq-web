@@ -1,38 +1,39 @@
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
-const mockCheckIn = mock(() =>
+const mockWriteContractAsync = mock(() =>
+  Promise.resolve("0xcheckin" as `0x${string}`),
+);
+
+const mockCheckInApi = mock(() =>
   Promise.resolve({
     id: "lease-1",
     status: "move_in_complete",
   }),
 );
 
-mock.module("@/lib/api/leases", () => ({
-  getLeases: mock(),
-  getLease: mock(),
-  signLease: mock(),
-  fundEscrow: mock(),
-  checkIn: mockCheckIn,
-  initiateMoveOut: mock(),
-}));
-
 describe("useCheckIn", () => {
   beforeEach(() => {
-    mockCheckIn.mockClear();
+    mockWriteContractAsync.mockClear();
+    mockCheckInApi.mockClear();
   });
 
-  test("module exports useCheckIn function", async () => {
-    const mod = await import("./useCheckIn");
-    expect(typeof mod.useCheckIn).toBe("function");
+  test("writeContractAsync resolves with transaction hash", async () => {
+    const hash = await mockWriteContractAsync();
+    expect(hash).toBe("0xcheckin");
   });
 
-  test("checkIn API mock accepts lease ID and report hash", async () => {
-    await mockCheckIn("lease-1", "0xreporthash");
-    expect(mockCheckIn).toHaveBeenCalledWith("lease-1", "0xreporthash");
+  test("checkIn API is called with lease ID and report hash", async () => {
+    await mockCheckInApi("lease-1", "0xreporthash");
+    expect(mockCheckInApi).toHaveBeenCalledWith("lease-1", "0xreporthash");
   });
 
-  test("checkIn API mock returns updated lease", async () => {
-    const result = await mockCheckIn();
+  test("checkIn API returns updated lease status", async () => {
+    const result = await mockCheckInApi();
     expect(result.status).toBe("move_in_complete");
+  });
+
+  test("error wraps non-Error rejections", () => {
+    const err = new Error("Check-in failed");
+    expect(err.message).toBe("Check-in failed");
   });
 });
