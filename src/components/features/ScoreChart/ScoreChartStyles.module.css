@@ -1,0 +1,42 @@
+.wrapper {
+  width: 100%;
+}
+
+.chart {
+  width: 100%;
+  display: block;
+}
+
+.bar {
+  fill: var(--color-primary);
+  transition: fill var(--transition-normal);
+  rx: 0.3rem;
+}
+
+.bar:hover {
+  fill: var(--color-primary-hover);
+}
+
+.label {
+  font-size: 1rem;
+  fill: var(--color-text-secondary);
+  text-anchor: middle;
+  font-family: var(--font-family);
+}
+
+.scoreLabel {
+  font-size: 0.9rem;
+  fill: var(--color-text);
+  text-anchor: middle;
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
