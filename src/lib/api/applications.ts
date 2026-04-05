@@ -1,11 +1,14 @@
-import { api } from "./client";
 import type { Application } from "@/lib/types/application";
+import { api } from "./client";
 
-export async function submitApplication(listingId: string, data: {
-  coverMessage?: string;
-  zkProofHash?: string;
-  credentialSummary?: Record<string, unknown>;
-}): Promise<Application> {
+export async function submitApplication(
+  listingId: string,
+  data: {
+    coverMessage?: string;
+    zkProofHash?: string;
+    credentialSummary?: Record<string, unknown>;
+  },
+): Promise<Application> {
   return api.post(`/api/v1/listings/${listingId}/applications`, data);
 }
 
@@ -17,6 +20,13 @@ export async function getApplication(id: string): Promise<Application> {
   return api.get(`/api/v1/applications/${id}`);
 }
 
-export async function updateApplicationStatus(id: string, status: string, reason?: string): Promise<Application> {
-  return api.put(`/api/v1/applications/${id}/status`, { status, rejectionReason: reason });
+export async function updateApplicationStatus(
+  id: string,
+  status: string,
+  reason?: string,
+): Promise<Application> {
+  return api.put(`/api/v1/applications/${id}/status`, {
+    status,
+    rejectionReason: reason,
+  });
 }

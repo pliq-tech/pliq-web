@@ -1,4 +1,10 @@
-export type ListingStatus = "draft" | "analyzing" | "active" | "rented" | "inactive" | "archived";
+export type ListingStatus =
+  | "draft"
+  | "analyzing"
+  | "active"
+  | "rented"
+  | "inactive"
+  | "archived";
 
 export interface Listing {
   id: string;

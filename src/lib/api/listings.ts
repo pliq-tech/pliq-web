@@ -1,5 +1,5 @@
-import { api } from "./client";
 import type { Listing, ListingFilter } from "@/lib/types/listing";
+import { api } from "./client";
 
 interface PaginatedResponse<T> {
   items: T[];
@@ -20,7 +20,8 @@ export async function searchListings(
   if (filters.city) params.set("city", filters.city);
   if (filters.minRent) params.set("min_rent", String(filters.minRent));
   if (filters.maxRent) params.set("max_rent", String(filters.maxRent));
-  if (filters.minBedrooms) params.set("min_bedrooms", String(filters.minBedrooms));
+  if (filters.minBedrooms)
+    params.set("min_bedrooms", String(filters.minBedrooms));
 
   return api.get(`/api/v1/listings?${params.toString()}`);
 }
@@ -33,6 +34,9 @@ export async function createListing(data: Partial<Listing>): Promise<Listing> {
   return api.post("/api/v1/listings", data);
 }
 
-export async function updateListing(id: string, data: Partial<Listing>): Promise<Listing> {
+export async function updateListing(
+  id: string,
+  data: Partial<Listing>,
+): Promise<Listing> {
   return api.patch(`/api/v1/listings/${id}`, data);
 }

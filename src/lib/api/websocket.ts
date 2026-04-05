@@ -55,7 +55,7 @@ class WebSocketClient {
     if (!this.handlers.has(eventType)) {
       this.handlers.set(eventType, new Set());
     }
-    this.handlers.get(eventType)!.add(handler);
+    this.handlers.get(eventType)?.add(handler);
   }
 
   unsubscribe(eventType: string, handler?: EventHandler): void {

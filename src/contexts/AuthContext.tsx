@@ -1,14 +1,14 @@
 "use client";
 
-import type { UserProfile } from "@/lib/types/auth";
 import {
-  type ReactNode,
   createContext,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
   useState,
 } from "react";
+import type { UserProfile } from "@/lib/types/auth";
 
 interface AuthContextValue {
   isAuthenticated: boolean;

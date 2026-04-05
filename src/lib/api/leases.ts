@@ -1,5 +1,5 @@
-import { api } from "./client";
 import type { Lease } from "@/lib/types/lease";
+import { api } from "./client";
 
 export async function getLeases(): Promise<Lease[]> {
   return api.get("/api/v1/leases");
