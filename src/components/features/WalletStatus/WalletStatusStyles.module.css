@@ -1,0 +1,56 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--glass-radius);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur))
+    saturate(var(--glass-saturation));
+  border: 0.1rem solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.indicator {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.connected {
+  background: var(--color-success);
+}
+
+.disconnected {
+  background: var(--color-error);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.address {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.balance {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+@supports not (backdrop-filter: blur(1rem)) {
+  .wrapper {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
