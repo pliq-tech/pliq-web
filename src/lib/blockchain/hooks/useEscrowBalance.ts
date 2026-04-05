@@ -1,7 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { formatUnits } from "viem";
+import { useReadContract } from "wagmi";
+import { contractAddresses, RENTAL_AGREEMENT_ABI } from "@/lib/contracts";
 import type { EscrowBreakdown } from "@/lib/types/lease";
+
+const USDC_DECIMALS = 6;
 
 interface UseEscrowBalanceReturn {
   escrow: EscrowBreakdown | null;
@@ -14,36 +19,43 @@ export function useEscrowBalance(
   leaseId: string | null,
 ): UseEscrowBalanceReturn {
   const [escrow, setEscrow] = useState<EscrowBreakdown | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
 
-  const fetch = useCallback(async () => {
-    if (!leaseId) {
-      setIsLoading(false);
-      return;
-    }
-    setIsLoading(true);
-    setError(null);
-    try {
-      // Stub: would use viem readContract to get on-chain escrow balance
-      setEscrow({
-        depositAmount: 2400,
-        funded: true,
-        escrowBalance: 2400,
-        deductions: 0,
-      });
-    } catch (err) {
-      setError(
-        err instanceof Error ? err : new Error("Failed to read escrow balance"),
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  }, [leaseId]);
+  const {
+    data: balanceRaw,
+    isLoading,
+    error: readError,
+    refetch: refetchContract,
+  } = useReadContract({
+    address: contractAddresses.escrow,
+    abi: RENTAL_AGREEMENT_ABI,
+    functionName: "getEscrowBalance",
+    args: leaseId ? [leaseId as `0x${string}`] : undefined,
+    query: {
+      enabled: !!leaseId,
+    },
+  });
 
   useEffect(() => {
-    fetch();
-  }, [fetch]);
+    if (balanceRaw !== undefined) {
+      const balance = Number(formatUnits(balanceRaw as bigint, USDC_DECIMALS));
+      setEscrow({
+        depositAmount: balance,
+        funded: balance > 0,
+        escrowBalance: balance,
+        deductions: 0,
+      });
+    }
+  }, [balanceRaw]);
 
-  return { escrow, isLoading, error, refetch: fetch };
+  const error = readError
+    ? readError instanceof Error
+      ? readError
+      : new Error("Failed to read escrow balance")
+    : null;
+
+  const refetch = useCallback(() => {
+    refetchContract();
+  }, [refetchContract]);
+
+  return { escrow, isLoading, error, refetch };
 }
