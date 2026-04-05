@@ -1,0 +1,46 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturation));
+  -webkit-backdrop-filter: blur(var(--glass-blur))
+    saturate(var(--glass-saturation));
+  border: 0.1rem solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+  padding: var(--space-xl);
+  width: 100%;
+}
+
+@supports not (backdrop-filter: blur(0.1rem)) {
+  .card {
+    background: rgba(255, 255, 255, 0.92);
+  }
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.logoText {
+  display: block;
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: -0.05em;
+}
+
+.logoSubtext {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
