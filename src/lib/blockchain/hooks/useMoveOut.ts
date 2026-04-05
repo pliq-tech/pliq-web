@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { initiateMoveOut } from "@/lib/api/leases";
+// TODO: Re-enable once backend adds /leases/{id}/move-out endpoint
+// import { initiateMoveOut } from "@/lib/api/leases";
 import { contractAddresses, RENTAL_AGREEMENT_ABI } from "@/lib/contracts";
 
 interface UseMoveOutReturn {
@@ -34,7 +35,8 @@ export function useMoveOut(): UseMoveOutReturn {
         args: [leaseId as `0x${string}`],
       });
       setTxHash(hash);
-      await initiateMoveOut(leaseId);
+      // TODO: Notify backend once /leases/{id}/move-out endpoint exists
+      // await initiateMoveOut(leaseId);
       return hash;
     } catch (err) {
       const wrapped = err instanceof Error ? err : new Error("Move-out failed");

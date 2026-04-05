@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { parseUnits } from "viem";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import { fundEscrow as fundEscrowApi } from "@/lib/api/leases";
+// TODO: Backend escrow endpoint is /api/v1/escrow/commit (not lease-scoped).
+// Refactor to use the correct escrow API once the escrow client module is wired up.
+// import { fundEscrow as fundEscrowApi } from "@/lib/api/leases";
 import {
   contractAddresses,
   ERC20_ABI,
@@ -54,7 +56,8 @@ export function useFundEscrow(): UseFundEscrowReturn {
       });
 
       setTxHash(hash);
-      await fundEscrowApi(leaseId, hash);
+      // TODO: Call /api/v1/escrow/commit instead once the escrow client is wired up
+      // await fundEscrowApi(leaseId, hash);
       return hash;
     } catch (err) {
       setIsApproving(false);

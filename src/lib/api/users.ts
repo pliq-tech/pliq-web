@@ -20,5 +20,10 @@ export async function createProfile(data: {
   role: string;
   preferredLanguage?: string;
 }): Promise<UserProfile> {
-  return api.post("/api/v1/users/register", data);
+  const roleMap: Record<string, string> = { tenant: "Tenant", landlord: "Landlord", both: "Both" };
+  return api.put("/api/v1/users/me", {
+    display_name: data.displayName,
+    role: roleMap[data.role] ?? data.role,
+    preferred_language: data.preferredLanguage,
+  });
 }

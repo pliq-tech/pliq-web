@@ -1,5 +1,5 @@
 import { createPublicClient, http } from "viem";
-import { worldChain } from "viem/chains";
+import { worldchain } from "viem/chains";
 import { config } from "@/lib/config";
 
 export const PLIQ_REGISTRY_ABI = [
@@ -176,6 +176,6 @@ export const contractAddresses = {
 } as const;
 
 export const publicClient = createPublicClient({
-  chain: worldChain,
+  chain: worldchain,
   transport: http(config.rpcUrl || undefined),
 });

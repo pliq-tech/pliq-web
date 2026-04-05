@@ -166,7 +166,10 @@ export default function DashboardPage() {
           searchListings({}, 1, 50)
             .then((r) => r.items)
             .catch(() => [] as Listing[]),
-          api.get<PorScore>("/api/v1/por/score").catch(() => null),
+          api
+            .get<{ score: PorScore }>("/api/v1/reputation/me")
+            .then((r) => r.score)
+            .catch(() => null),
         ]);
         setScore(porScore);
         setNextPayment(payments[0] ?? null);

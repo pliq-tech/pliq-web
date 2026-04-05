@@ -21,6 +21,12 @@ import type { Credential } from "@/lib/privacy/unlink";
 import { generateShareableProof } from "@/lib/privacy/unlink";
 import type { PorBreakdown, PorScore, PorTrend } from "@/lib/types/por";
 
+interface ReputationMeResponse {
+  score: PorScore;
+  breakdown: PorBreakdown;
+  trends: PorTrend[];
+}
+
 function ReputationSkeleton() {
   return (
     <Stack gap="lg">
@@ -57,15 +63,13 @@ export default function ReputationPage() {
 
   useEffect(() => {
     Promise.all([
-      api.get<PorScore>("/api/v1/por/score"),
-      api.get<PorBreakdown>("/api/v1/por/breakdown"),
-      api.get<PorTrend[]>("/api/v1/por/trends"),
+      api.get<ReputationMeResponse>("/api/v1/reputation/me"),
       getCredentials(),
     ])
-      .then(([s, b, t, c]) => {
-        setScore(s);
-        setBreakdown(b);
-        setTrends(t);
+      .then(([rep, c]) => {
+        setScore(rep.score);
+        setBreakdown(rep.breakdown);
+        setTrends(rep.trends);
         setCredentials(c);
       })
       .catch(() => setError("Failed to load reputation data."))

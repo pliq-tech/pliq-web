@@ -38,5 +38,5 @@ export async function updateListing(
   id: string,
   data: Partial<Listing>,
 ): Promise<Listing> {
-  return api.patch(`/api/v1/listings/${id}`, data);
+  return api.put(`/api/v1/listings/${id}`, data);
 }

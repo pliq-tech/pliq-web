@@ -29,7 +29,7 @@ export function useReputation(): UseReputationReturn {
     setIsLoading(true);
     setError(null);
     try {
-      const result = await api.get<ReputationResponse>("/api/v1/reputation");
+      const result = await api.get<ReputationResponse>("/api/v1/reputation/me");
       setScore(result.score);
       setBreakdown(result.breakdown);
       setTrends(result.trends);
