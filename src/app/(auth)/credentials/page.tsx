@@ -74,7 +74,7 @@ export default function CredentialsPage() {
   const [error, setError] = useState("");
 
   const generatedCount = credentials.size;
-  const canContinue = generatedCount >= 1;
+  const canContinue = true;
 
   async function handleGenerateCredential(info: CredentialTypeInfo) {
     if (credentials.has(info.type) || processingType) return;
@@ -146,11 +146,14 @@ export default function CredentialsPage() {
         Continue to Dashboard ({generatedCount}/5 credentials)
       </Button>
 
-      <Link href="/dashboard" className={styles.skipLink}>
-        <Text size="sm" color="secondary" align="center">
-          Skip for now
-        </Text>
-      </Link>
+      <Button
+        variant="ghost"
+        size="md"
+        fullWidth
+        onClick={() => router.push("/dashboard")}
+      >
+        Skip for now
+      </Button>
     </Stack>
   );
 }
