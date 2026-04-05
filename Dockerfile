@@ -1,12 +1,22 @@
 # Stage 1: Dependencies
 FROM oven/bun:1.3-alpine AS deps
 WORKDIR /app
+
+# Local dev: docker-compose provides pliq-web-ui via additional_contexts
+# CI/CD: must publish @pliq/ui to npm or use a GitHub token
+COPY --from=pliq-web-ui . /tmp/pliq-web-ui/
+
 COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+
+# Remove private GitHub dep, install remaining deps, then copy @pliq/ui directly
+RUN sed -i '/@pliq\/ui/d' package.json
+RUN bun install
+RUN mkdir -p node_modules/@pliq && cp -r /tmp/pliq-web-ui node_modules/@pliq/ui
 
 # Stage 2: Builder
 FROM oven/bun:1.3-alpine AS builder
 WORKDIR /app
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
