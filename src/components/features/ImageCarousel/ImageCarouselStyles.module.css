@@ -1,0 +1,87 @@
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--glass-radius);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3.2rem;
+  height: 3.2rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-normal);
+  z-index: 1;
+}
+
+.navButton:hover {
+  background: var(--glass-bg-hover);
+}
+
+.prev {
+  left: var(--space-sm);
+}
+
+.next {
+  right: var(--space-sm);
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) 0;
+  position: absolute;
+  bottom: var(--space-sm);
+  left: 0;
+  right: 0;
+}
+
+.dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: var(--radius-full);
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition-normal);
+}
+
+.dotActive {
+  background: var(--color-text-inverse);
+}
+
+@supports not (backdrop-filter: blur(1rem)) {
+  .navButton {
+    background: rgba(255, 255, 255, 0.85);
+  }
+}
