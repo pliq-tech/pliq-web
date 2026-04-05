@@ -10,6 +10,7 @@ Next.js progressive web app for the Pliq rental platform. Provides the full tena
 - **UI:** React 19 + @pliq/ui component library
 - **Linting / Formatting:** Biome 2.2.0
 - **Testing:** bun test + @testing-library/react + happy-dom
+- **Blockchain:** viem + wagmi + @tanstack/react-query
 - **Styling:** CSS Modules with Liquid Glass design system
 
 ## Prerequisites
@@ -88,14 +89,15 @@ src/
 │   │   ├── ImageCarousel/     # Property image carousel
 │   │   └── ScoreChart/        # Reputation score chart
 │   ├── layouts/               # AuthLayout (glassmorphism), AppLayout (sidebar/navbar/bottomnav)
-│   └── providers/             # AppProviders, WebSocketProvider
+│   └── providers/             # AppProviders, WebSocketProvider, WagmiProvider
 ├── contexts/                  # AuthContext, ThemeContext, NotificationContext
 ├── hooks/
 │   ├── api/                   # 11 API data-fetching hooks
 │   └── useClickOutside.ts     # Click outside utility
 ├── lib/
 │   ├── api/                   # REST client, WebSocket client, endpoint modules
-│   ├── blockchain/            # Chain config, 6 transaction hooks
+│   ├── blockchain/            # Chain config, 6 wagmi transaction hooks
+│   ├── contracts.ts           # Contract ABIs and publicClient (viem)
 │   ├── privacy/               # World ID, Unlink, Self Protocol wrappers
 │   ├── validation/            # Profile and listing validation
 │   ├── types/                 # TypeScript type definitions
