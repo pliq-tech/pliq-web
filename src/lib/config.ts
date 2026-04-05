@@ -8,6 +8,8 @@ export const config = {
   registryContract: process.env.NEXT_PUBLIC_REGISTRY_CONTRACT! as `0x${string}`,
   reputationContract: process.env
     .NEXT_PUBLIC_REPUTATION_CONTRACT! as `0x${string}`,
+  rpcUrl: process.env.NEXT_PUBLIC_RPC_URL || "",
+  usdcContract: process.env.NEXT_PUBLIC_USDC_CONTRACT! as `0x${string}`,
   circleAppId: process.env.NEXT_PUBLIC_CIRCLE_APP_ID!,
   selfAppId: process.env.NEXT_PUBLIC_SELF_APP_ID!,
 } as const;
